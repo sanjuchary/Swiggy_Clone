@@ -4,6 +4,10 @@ body {
 }
 :root {
   --whiteText: #fefffe;
+  --grayFooter: #f1f0f4;
+  --grayButton: #d9dadb;
+  --lightGreen: #c9f9e4;
+  --darkGreen: #18a772;
   --blackText: #676b6c;
   --darkGray: #434549;
   --lightGray: #8e8e92;
