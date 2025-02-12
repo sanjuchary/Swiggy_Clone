@@ -1,130 +1,130 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import "./Carousel.css"; // Create this file for custom styles
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import HomeCards from "../../Cards/HomeCards";
 
-const items = [
-  {
-    title: "Biryani",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Biryani.png",
-  },
-  {
-    title: "South Indian",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/South%20Indian.png",
-  },
-  {
-    title: "Burger",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Burger.png",
-  },
-  {
-    title: "Pizza",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Pizza.png",
-  },
-  {
-    title: "Cake",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Cake.png",
-  },
-  {
-    title: "North Indian",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/North%20Indian.png",
-  },
-  {
-    title: "Dosa",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Dosa.png",
-  },
-  {
-    title: "Rolls",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Rolls.png",
-  },
-  {
-    title: "Paratha",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Paratha.png",
-  },
-  {
-    title: "Noodles",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Noodles.png",
-  },
-  {
-    title: "Pastry",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Pastry.png",
-  },
-  {
-    title: "Pure Veg",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Pure%20Veg.png",
-  },
-  {
-    title: "Pastry",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Pastry.png",
-  },
-  {
-    title: "Pure Veg",
-    imageUrl:
-      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Pure%20Veg.png",
-  },
-];
+interface Item {
+  imageUrl: string;
+  title: string;
+  name: string;
+  rating: string;
+  description: string;
+  price: string;
+  address: string;
+  distance: string;
+  discount: string;
+  discountType: string;
+}
 
-const Carousel = () => {
-  const [currentPage, setCurrentPage] = React.useState(0);
-  const itemsPerRow = 6; // 6 items per row
-  const rowsPerPage = 2; // 2 rows per page
-  const itemsPerPage = itemsPerRow * rowsPerPage; // Total items per page
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+interface CarouselProps {
+  items: Item[];
+  itemsPerRow: number;
+  rowsPerPage: number;
+  title: string;
+}
 
-  const handlePrev = () => {
-    setCurrentPage((prevPage) =>
-      prevPage === 0 ? totalPages - 1 : prevPage - 1
-    );
+const Carousel: React.FC<CarouselProps> = ({ items, itemsPerRow, title }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+
+  useEffect(() => {
+    const checkScroll = () => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        setCanScrollLeft(scrollLeft > 0);
+        setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+      }
+    };
+
+    if (scrollRef.current) {
+      scrollRef.current.addEventListener("scroll", checkScroll);
+    }
+
+    return () => {
+      if (scrollRef.current) {
+        scrollRef.current.removeEventListener("scroll", checkScroll);
+      }
+    };
+  }, []);
+
+  const handleScroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 200;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
   };
-
-  const handleNext = () => {
-    setCurrentPage((prevPage) =>
-      prevPage === totalPages - 1 ? 0 : prevPage + 1
-    );
-  };
-
-  const paginatedItems = items.slice(
-    currentPage * itemsPerPage,
-    currentPage * itemsPerPage + itemsPerPage
-  );
 
   return (
     <Box
       sx={{
-        position: "relative",
         width: "80%",
         overflow: "hidden",
         margin: "auto",
         marginY: "3rem",
       }}
     >
-      <Typography sx={{ marginBottom: "1rem" }}>
-        Order our best food options
-      </Typography>
-      <IconButton
-        onClick={handlePrev}
-        sx={{ position: "absolute", left: 0, top: "50%" }}
-      >
-        <ArrowBackIos />
-      </IconButton>
       <Box
         sx={{
           display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography
+          sx={{
+            marginBottom: "1rem",
+            fontSize: "1.5rem",
+            fontWeight: "600",
+            fontFamily: "Gilroy, sans-serif",
+          }}
+        >
+          {title}
+        </Typography>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <IconButton
+            onClick={() => handleScroll("left")}
+            disabled={!canScrollLeft}
+            sx={{
+              backgroundColor: "var(--grayButton)",
+              borderRadius: "100%",
+              marginRight: 1,
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => handleScroll("right")}
+            disabled={!canScrollRight || items.length === 0}
+            sx={{
+              backgroundColor: "var(--grayButton)",
+              borderRadius: "100%",
+              marginRight: 1,
+            }}
+          >
+            <ArrowForwardIcon />
+          </IconButton>
+        </Box>
+      </Box>
+      <Box
+        component="div"
+        ref={scrollRef}
+        sx={{
+          display: "flex",
           flexDirection: "column",
+          alignItems: "center",
+          overflow: "scroll",
+          scrollbarWidth: "none",
+          justifyContent: "space-evenly",
           gap: 2,
-          transition: "transform 0.5s ease",
+          transition: "transform 0.5s ease-in-out",
+          scrollBehavior: "smooth",
+          cursor: "pointer",
         }}
       >
         {[0, 1].map((row) => (
@@ -132,33 +132,73 @@ const Carousel = () => {
             key={row}
             sx={{
               display: "flex",
+              paddingLeft:
+                title === "Discover best restaurants on Dineout"
+                  ? "61rem"
+                  : "28rem",
               justifyContent: "center",
               gap: 2,
+              height: "20vh",
+              transition: "transform 0.5s ease-in-out",
             }}
           >
-            {paginatedItems
+            {items
               .slice(row * itemsPerRow, row * itemsPerRow + itemsPerRow)
               .map((item, index) => (
-                <img
-                  key={index}
-                  src={item.imageUrl}
-                  alt={item.title}
-                  style={{
-                    height: "20vh",
-                    width: "20vw",
-                    objectFit: "contain",
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                    // justifyContent: "center",
+                    gap: 1,
                   }}
-                />
+                >
+                  {title === "Discover best restaurants on Dineout" ? (
+                    <Box>
+                      <HomeCards
+                        image={item?.imageUrl}
+                        title={item?.title}
+                        rating={item?.rating}
+                        description={item?.description}
+                        price={item?.price}
+                        address={item?.address}
+                        distance={item?.distance}
+                        discount={item?.discount}
+                        discountType={item?.discountType}
+                      />
+                    </Box>
+                  ) : (
+                    <>
+                      <img
+                        key={index}
+                        src={item.imageUrl}
+                        alt={item.title}
+                        style={{
+                          height: "20vh",
+                          width: "10vw",
+                          objectFit: "cover",
+                          transition: "transform 0.5s ease",
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: "1.25rem",
+                          fontWeight: 600,
+                          fontFamily: "Gilroy, sans-serif",
+                          color: "var(--darkGray)",
+                        }}
+                      >
+                        {item?.name}
+                      </Typography>
+                    </>
+                  )}
+                </Box>
               ))}
           </Box>
         ))}
       </Box>
-      <IconButton
-        onClick={handleNext}
-        sx={{ position: "absolute", right: 0, top: "50%" }}
-      >
-        <ArrowForwardIos />
-      </IconButton>
     </Box>
   );
 };

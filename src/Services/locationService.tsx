@@ -1,9 +1,9 @@
-import { AppDispatch } from "../redux/store";
 import {
   locationFailure,
   locationRequest,
   locationSuccess,
-} from "../redux/reducers/locationreducer";
+} from "../redux/reducers/locationReducer";
+import { AppDispatch } from "../redux/store";
 
 type Coordinates = {
   latitude: number;

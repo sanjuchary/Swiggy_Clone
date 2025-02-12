@@ -311,6 +311,7 @@ const MainHeader = () => {
             style={{
               width: "17rem",
               height: "20rem",
+              cursor: "pointer",
             }}
           />
           <img
@@ -319,6 +320,7 @@ const MainHeader = () => {
             style={{
               width: "17rem",
               height: "20rem",
+              cursor: "pointer",
             }}
           />
           <img
@@ -327,6 +329,7 @@ const MainHeader = () => {
             style={{
               width: "17rem",
               height: "20rem",
+              cursor: "pointer",
             }}
           />
           <img
@@ -335,6 +338,7 @@ const MainHeader = () => {
             style={{
               width: "17rem",
               height: "20rem",
+              cursor: "pointer",
             }}
           />
         </Box>
