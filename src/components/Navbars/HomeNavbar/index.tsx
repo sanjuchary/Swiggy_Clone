@@ -17,8 +17,6 @@ const HomeNavbar = () => {
           alignItems: "center",
           justifyContent: "space-between",
           width: "80%",
-          // paddingX: 20,
-          // paddingY: 2,
         }}
       >
         <img
