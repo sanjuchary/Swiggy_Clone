@@ -19,7 +19,7 @@ export const fetchCurrentLocation =
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords.latitude}&lon=${coords.longitude}`
       );
       const data = await response.json();
-
+      console.log("LocData", data);
       dispatch(locationSuccess(data.display_name)); // Ensure it's a string
     } catch (error) {
       console.error("Error fetching current location:", error);

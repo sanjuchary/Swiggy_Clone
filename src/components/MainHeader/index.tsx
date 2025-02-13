@@ -17,6 +17,7 @@ import NearMeIcon from "@mui/icons-material/NearMe";
 import { fetchCurrentLocation } from "../../Services/locationService";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
+import { useNavigate } from "react-router-dom";
 
 const topLocations = [
   { title: "Current Location", id: 0 },
@@ -31,6 +32,8 @@ const MainHeader = () => {
     []
   );
   const [inputValue, setInputValue] = React.useState("");
+
+  const navigate = useNavigate();
 
   //   const [loading, setLoading] = React.useState(false);
 
@@ -305,15 +308,17 @@ const MainHeader = () => {
             justifyContent: "center",
           }}
         >
-          <img
-            src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/MERCHANDISING_BANNERS/IMAGES/MERCH/2024/8/1/fa01e85b-3057-482d-9523-5289722b1df2_Food4BU.png"
-            alt="Image Not Found"
-            style={{
-              width: "17rem",
-              height: "20rem",
-              cursor: "pointer",
-            }}
-          />
+          <Box onClick={() => navigate("/restaurants")}>
+            <img
+              src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/MERCHANDISING_BANNERS/IMAGES/MERCH/2024/8/1/fa01e85b-3057-482d-9523-5289722b1df2_Food4BU.png"
+              alt="Image Not Found"
+              style={{
+                width: "17rem",
+                height: "20rem",
+                cursor: "pointer",
+              }}
+            />
+          </Box>
           <img
             src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/MERCHANDISING_BANNERS/IMAGES/MERCH/2024/8/1/fa01e85b-3057-482d-9523-5289722b1df2_Food4BU.png"
             alt="Image Not Found"
